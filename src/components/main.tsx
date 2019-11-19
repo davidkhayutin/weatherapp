@@ -11,6 +11,7 @@ export default class HomePage extends React.Component {
   public state = {
     city: "",
     error: "",
+    errorHeight: "",
     view: "search",
     search: "",
     backgroundImage: 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/1-sun-and-clouds-macroworld.jpg',
@@ -21,7 +22,7 @@ export default class HomePage extends React.Component {
     fiveDays: [],
     apiKey: "a53a8a419f8c79db219002f5a60e64dc",
     starterCities: [],
-    ready: false
+    ready: false,
   };
   // set city name as entered into search bar
   setCity = (e: React.SyntheticEvent): void => {
@@ -32,18 +33,21 @@ export default class HomePage extends React.Component {
 
   // toggle view betweem current weather and 5 day
   setCurrentView = (viewType: string) => {
-    this.setState({ currentView: viewType })
+    this.setState({ currentView: viewType });
   }
   // set state between F or C
   setTemp = (type: string) => {
-    this.setState({ tempType: type })
+    this.setState({ tempType: type });
   }
 
   // submit city search and preform api calls
   submitCity = async (e: React.SyntheticEvent): Promise<void> => {
     e.preventDefault()
     if (this.state.city.length < 1) {
-      alert("City name must be at least one letter")
+      this.setState({ error: "City name must be at least one letter", errorHeight: "5%" })
+      setTimeout(() => {
+        this.setState({ error: "", errorHeight: "" })
+      }, 5000)
       return
     }
     let city;
@@ -54,10 +58,10 @@ export default class HomePage extends React.Component {
 
     const cityCountry = this.state.city.split(",")
     if (cityCountry.length > 1) {
-      city = cityCountry[0]
+      city = cityCountry[0];
       country = cityCountry[1].replace(/\s/g, '');
     } else {
-      city = cityCountry[0]
+      city = cityCountry[0];
     }
 
     const url = country ?
@@ -77,14 +81,17 @@ export default class HomePage extends React.Component {
       // get 5 day forecast
 
       const hourly = await weatherClient.get(`forecast?q=${url}&mode=json&APPID`)
-      const fiveDays = []
+      const fiveDays = [];
 
       // set 5 day forecast
       fiveDays.push(hourly.data.list[3], hourly.data.list[11], hourly.data.list[19], hourly.data.list[27], hourly.data.list[35])
       this.setState({ fiveDays })
 
     } catch (error) {
-      alert("Sorry, we can not find weather information for this city. Please change your search and try again")
+      this.setState({ error: "Sorry, we can not find weather information for this city. Please change your search and try again", errorHeight: "5%" })
+      setTimeout(() => {
+        this.setState({ error: "", errorHeight: "" })
+      }, 5000)
       return
     }
   }
@@ -134,6 +141,7 @@ export default class HomePage extends React.Component {
           currentView={this.setCurrentView}
           search={this.state.search}
           temp={this.setTemp} />
+        <div className="error" style={{ height: this.state.errorHeight }}>{this.state.error}</div>
         <div className="mainBody" style={backgroundImage}>
           {cities}
         </div>
@@ -149,7 +157,8 @@ export default class HomePage extends React.Component {
             currentView={this.setCurrentView}
             search={this.state.search}
             temp={this.setTemp} />
-          <div className="mainBody" style={backgroundImage}></div >
+          <div className="mainBody" style={backgroundImage} ></div >
+          <div className="error" style={{ height: this.state.errorHeight }}>{this.state.error}</div>
           <CurrentWeatherDisplay currentWeather={this.state.currentweather} temp={this.state.tempType} />
         </div>
         :
@@ -162,7 +171,8 @@ export default class HomePage extends React.Component {
             currentView={this.setCurrentView}
             search={this.state.search}
             temp={this.setTemp} />
-          <div className="mainBody" style={backgroundImage}>
+          <div className="error" style={{ height: this.state.errorHeight }}>{this.state.error}</div>
+          <div className="mainBody" style={backgroundImage} >
             {fiveDays}
           </div >
 

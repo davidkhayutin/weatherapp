@@ -115,8 +115,8 @@ export default function PrimarySearchAppBar(props: Props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Current Forecast</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Five Day Forecast</MenuItem>
+      <MenuItem onClick={() => props.currentView("currentWeather")} >Current Forecast</MenuItem>
+      <MenuItem onClick={() => props.currentView("fiveDay")} >Five Day Forecast</MenuItem>
     </Menu>
   );
 

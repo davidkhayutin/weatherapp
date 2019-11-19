@@ -5,10 +5,15 @@
   border: none;
 }
 
-.errorMessage {
+.error {
+  width: 100%;
   justify-content: center;
   position: absolute;
-  margin-top: 5%
+  opacity: 0.5;
+  background-color: red;
+  color: white;
+  font-size: 2vh;
+  ;
 }
 
 .fiveDay {

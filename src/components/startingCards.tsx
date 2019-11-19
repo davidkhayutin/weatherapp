@@ -14,7 +14,6 @@ export default function StartingCard(props: Props) {
         </div>
         <h1>{props.temp === "c" ? (props.currentWeather.main.temp - 273.15).toFixed(0) : (((props.currentWeather.main.temp - 273.15) * 1.8) + 32).toFixed(0)}  <span className={props.temp === "c" ? "wi wi-celsius" : "wi wi-fahrenheit"}></span></h1>
         <div className="cityName"> <p>{props.currentWeather.name}</p></div>
-
       </div>
     </div>
   );
