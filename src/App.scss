@@ -19,8 +19,14 @@
   width: 100%;
   height: 2vw;
   text-align: center;
+  ;
 }
 
+@media screen and (max-width :900px) {
+  .cityForm {
+    height: 6vw;
+  }
+}
 
 .mainBody {
   opacity: 0.2;
